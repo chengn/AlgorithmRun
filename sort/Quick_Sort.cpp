@@ -11,6 +11,7 @@
 #include<ctime> 
 #include<iostream>
 #include<algorithm>
+
 using namespace std;
 
 int const arrayCnt=15;
@@ -19,7 +20,7 @@ int const randMax = 100;
 
 /*
 */ 
-void print(int * array)
+void printItem(int * array)
 {
      for(int i=0;i<arrayCnt;i++)
      {
@@ -30,7 +31,7 @@ void print(int * array)
 
 /*
 */ 
-void print(int * array,int begin,int end)
+void printItem(int * array,int begin,int end)
 {
      for(int i=begin;i<=end;i++)
      {
@@ -93,20 +94,25 @@ void quickSort(int* array,int begin,int end)
 
 
 /////////////////////////////////////////////////////////////////////////////// 
-int main()
+int quickSortTest()
 {
     int array[arrayCnt];
     for(int i=0;i<arrayCnt;i++)
     {
         genericNum(array,arrayCnt);
-        print(array);
+        printItem(array);
         quickSort(array,0,arrayCnt-1);
         cout<<endl;
-        print(array);
+        printItem(array);
     //    sort(array);
     //    Print(array);
         cout<<"========================================================="<<endl;
     }
+}
+
+int main()
+{
+    quickSortTest(); 
     
     system("pause");
-}
+} 
