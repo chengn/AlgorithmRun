@@ -9,7 +9,8 @@
 
 #include <stdio.h>
 #include <stdlib.h> 
-#include <iostream> 
+#include <time.h> 
+
 
 // 
 bool const IS_PRINT_DETAIL = true; 
@@ -30,23 +31,20 @@ void printItem(int * array);
 int main(int argc, char *argv[])
 {
     printf("[info]into main \n"); 
+    //test merge sort 
     mergeSortTest();
-  //  int m = 0; 
-//    test(&m) ; 
-    
     system("PAUSE");
-    while(1){} 
-    
     printf("[info]quit main \n"); 
     return 0; 
 } 
 
-
-
+/*
+  test merge sort 
+*/ 
 void mergeSortTest()
 {
     printf("[info]into mergeSortTest \n"); 
-    int array[ARRAY_SIZE];
+    int array[ARRAY_SIZE]; 
     genericNum(array,ARRAY_SIZE);
     printf("original numbers are follow: "); 
     printItem(array); 
@@ -54,6 +52,7 @@ void mergeSortTest()
     mergeSort(array,0,ARRAY_SIZE-1); 
     printItem(array); 
     printf("[info]quit mergeSortTest \n"); 
+    return; 
 } 
 
 /*
@@ -63,26 +62,21 @@ void mergeSortTest()
       low:  low position
       high: high position    
 */
-void mergeSort(int array[],int low,int high)
+void mergeSort(int *array,int low,int high)
 {
-    printf("[info]into mergeSort,%d,%d \n",low,high); 
+    //printf("[info]into mergeSort,%d,%d \n",low,high); 
+    int mid = (high + low) / 2;
     if(low < high) 
     {
-        int mid = (high - low) / 2;
         //sort left 
-        if(low < mid)
-        { 
-            mergeSort(array,low,mid);
-        } 
+        mergeSort(array,low,mid);
         //sort right 
-        if(mid+1<high)
-        { 
-            mergeSort(array,mid+1,high);
-        } 
+        mergeSort(array,mid+1,high);
         //merge left & right 
         merge(array,low,mid,high);          
     } 
-    printf("[info]quit mergeSort \n"); 
+    //printf("[info]quit mergeSort \n"); 
+    return; 
 } 
 
 
@@ -94,51 +88,45 @@ void mergeSort(int array[],int low,int high)
       mid:  middle position
       high: high position   
 */ 
-void merge(int array[],int low,int mid,int high)
+void merge(int *array,int low,int mid,int high)
 {
-    printf("[info]into merge \n"); 
-    //mid belong left.so left plus 1; 
-    int leftCount =  mid-low+1;
-    int rightCount =  high-mid; 
-    int leftArray[leftCount];//begin 0,so +1 
-    int rightArray[rightCount]; 
+    //printf("[info]into merge (%d,%d,%d)\n",low,mid,high); 
+    int tempArray[high-low+1]; //temp array,sava sorted number; 
+    int pos = 0; //temp arra pos 
+    int leftPos = low; //left pos 
+    int rightPos = mid+1; // right pos 
     
-    for(int i=0;i<leftCount;++i) 
-    {
-        leftArray[i] = array[low+i]; 
-    } 
-    
-    for(int i=0;i<leftCount;++i) 
-    {
-        rightArray[i] = array[mid+1+i]; 
-    } 
-    int leftPos = 0;
-    int rightPos = 0; 
-    int arrayPos = low; 
-    while(leftPos < leftCount && rightPos < rightCount)
+    //go left and right 
+    while(leftPos <= mid && rightPos <= high) //this must = 
     {
         int bufValue;
-        if(leftArray[leftPos] <= rightArray[rightPos])
+        //left pos go 
+        if(array[leftPos] < array[rightPos])//this cann;t hava = 
         {
-            bufValue = leftArray[leftPos];
-            ++leftPos; 
+            tempArray[pos++] = array[leftPos++]; 
         } 
-        else
+        else//right pos go 
         {
-            bufValue = rightArray[rightPos];
-            ++rightPos; 
+            tempArray[pos++] = array[rightPos++]; 
         } 
-        array[arrayPos++]  = bufValue; 
     } 
-    while(leftPos < leftCount) 
+    //go alone left 
+    while(leftPos <= mid) //this must hava = 
     {
-        array[arrayPos++] = leftArray[leftPos++]; 
+        tempArray[pos++] = array[leftPos++]; 
     } 
-    while(rightPos < rightCount)
+    //go alone right 
+    while(rightPos <= high)//this must hav =  
     {
-        array[arrayPos++] = rightArray[rightPos++]; 
+        tempArray[pos++] = array[rightPos++]; 
     } 
-    printf("[info]quit merge \n"); 
+    //copy to original array
+    for(int i=0;i<pos;i++)
+    {
+        array[low+i] = tempArray[i]; 
+    } 
+    //printf("[info]quit merge \n"); 
+    return; 
 } 
 
 /*
@@ -149,13 +137,14 @@ void merge(int array[],int low,int mid,int high)
 */ 
 void genericNum(int *array,int count)
 {
-    printf("[info]into genericNum \n"); 
+    //printf("[info]into genericNum \n"); 
      srand((unsigned)time(NULL));
      for(int i=0;i<count;i++)
      {
          array[i] = rand()%RAND_MAX_VALUE;
      }
-    printf("[info]quit genericNum \n"); 
+    //printf("[info]quit genericNum \n"); 
+    return; 
 }
 
 /*
@@ -170,6 +159,7 @@ void printItem(int * array)
          printf("%d ",array[i]) ; 
      }
      printf("\n");
+     return; 
 }
 
 
